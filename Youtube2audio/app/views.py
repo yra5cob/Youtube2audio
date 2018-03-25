@@ -82,7 +82,7 @@ def player(request):
     except:
         print()
     res=""
-    conn = create_connection("C:/Users/Yeswanth Kumar/PycharmProjects/untitled11/db.sqlite3")
+    conn = create_connection("db.sqlite3")
     c = conn.cursor()
     query="select url from CACHE_URL where ID='"+link+"';"
     c.execute(query)
@@ -93,7 +93,7 @@ def player(request):
         video = pafy.new('https://www.youtube.com/watch?v=' + link)
         audiostreams = video.audiostreams
         res =audiostreams[0].url
-        conn = create_connection("C:/Users/Yeswanth Kumar/PycharmProjects/untitled11/db.sqlite3")
+        conn = create_connection("db.sqlite3")
         query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + link + "','" + res + "');"
         with conn:
             c.execute(query)
@@ -149,12 +149,12 @@ def create_connection(db_file):
     return None
 
 def preload(link):
-    conn = create_connection("C:/Users/Yeswanth Kumar/PycharmProjects/untitled11/db.sqlite3")
+    conn = create_connection("db.sqlite3")
     c = conn.cursor()
     video = pafy.new('https://www.youtube.com/watch?v=' + link)
     audiostreams = video.audiostreams
     res = audiostreams[0].url
-    conn = create_connection("C:/Users/Yeswanth Kumar/PycharmProjects/untitled11/db.sqlite3")
+    conn = create_connection("db.sqlite3")
     query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + link + "','" + res + "');"
     with conn:
         c.execute(query)
@@ -170,7 +170,7 @@ def play_song(request):
 def dateCheck():
     tdy=datetime.date.today()
     query="Select value from PROPERTIES where key like 'date'"
-    conn = create_connection("C:/Users/Yeswanth Kumar/PycharmProjects/untitled11/db.sqlite3")
+    conn = create_connection("db.sqlite3")
     c = conn.cursor()
     c.execute(query)
     rows = c.fetchall()
