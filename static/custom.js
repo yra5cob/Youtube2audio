@@ -5,6 +5,9 @@ var a
 var audio
 function btnClick(lnk, id, title) {
     //post("/index",{link:lnk});
+     audio = a[0];
+     audio.play();
+     audio.pause();
     $.post("player",
         {
             link: lnk
@@ -23,6 +26,7 @@ function btnClick(lnk, id, title) {
                 audio.play();
             });
             newdiv1.click();
+
         });
 }
 function btnAdd(lnk, id, title) {
@@ -34,7 +38,7 @@ function btnAdd(lnk, id, title) {
         },
         function (data, status) {
             var url = data;
-            var newdiv1 = $('<li><a href="#" data-title="' + title + '" data-src="' + url + '">' + title + '</a></li>');
+            var newdiv1 = $('<li><button type="button" class="close" data-dismiss="alert">&times;</button><a href="#" data-title="' + title + '" data-src="' + url + '">' + title + '</a></li>');
             $("ol").append(newdiv1);
             $('ol li').click(function (e) {
                 document.getElementById("titl").innerHTML = '<h1><em>' + $('a', this).attr('data-title') + '</em></h1>';
