@@ -119,7 +119,7 @@ def search(request):
                 'contents'][0]['itemSectionRenderer']['contents']
         for x in range(1, 20):
             try:
-                title = content[x]['videoRenderer']['title']['simpleText']
+                title = content[x]['videoRenderer']['title']['simpleText'].replace("'", " ")
                 img = content[x]['videoRenderer']['thumbnail']['thumbnails'][0]['url']
                 link = content[x]['videoRenderer']['videoId']
                 if x <= 5:
