@@ -127,7 +127,7 @@ def search(request):
                     t.daemon = True
                     theds[link]=t
                     t.start()
-                str = str + render_to_string("result.html", {"img": img, "title": title, "link": link, "id": i})
+                str = str + render_to_string("androidPlayer.html", {"img": img, "title": title, "link": link, "id": i})
                 i += 1
             except:
                 print
@@ -161,11 +161,7 @@ def preload(link):
     conn.commit()
 
 def play_song(request):
-    wrapper = FileWrapper(open("C:/Users/Yeswanth Kumar/Music/DJ/Jalsa.mp3",'rb'))
-    response = HttpResponse(wrapper, content_type='audio/mpeg')
-    response['Content-Length'] = os.path.getsize("C:/Users/Yeswanth Kumar/Music/DJ/Jalsa.mp3")
-    response['Content-Disposition'] = 'attachment; filename=%s' % "Jalsa.mp3"
-    return response
+    return HttpResponse(render_to_string("index.html"))
 
 def dateCheck():
     tdy=datetime.date.today()
