@@ -35,6 +35,8 @@ $(document).ready(function () {
 
 function btnClick(lnk, id, title,img) {
     //post("/index",{link:lnk});
+    $('audio')[0].play();
+    $('audio')[0].pause();
     $.post("player",
         {
             link: lnk
