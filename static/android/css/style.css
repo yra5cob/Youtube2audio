@@ -550,7 +550,7 @@ html {
 .play_btn {
   position: absolute;
   top: -16px;
-  left: 8px;
+  left: 35%;
   width: 51px;
   height: 51px;
   color: #FA0D85;

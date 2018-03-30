@@ -56,7 +56,7 @@ $(document).ready(function() {
               '</div>' +
             '</div>' +
           '</div>' +
-          '<div class="song_block pl-list__title">{title}</div>' +
+          '<div class="song_block pl-list__title">{title}</div><a href="#" class="delete">Delete</a>' +
         '</li>',
         // settings
         settings = {
@@ -219,6 +219,7 @@ $(document).ready(function() {
         var count = playList.length;
         var html = [];
         playList.push.apply(playList, addList);
+
         addList.forEach(function(item) {
           html.push(
             tplList.replace('{count}', count++).replace('{title}', item.title)
@@ -287,7 +288,7 @@ $(document).ready(function() {
         pl = create('div', {
           'className': 'player_playlist',
           'id': 'pl',
-          'innerHTML': '<ul class="pl-ul">' + (!isEmptyList() ? html.join('') : '<li class="pl-list--empty">PlayList is empty</li>') + '</ul>'
+          'innerHTML': '<ul id="slippylist" class="pl-ul">' + (!isEmptyList() ? html.join('') : '<li class="pl-list--empty">PlayList is empty</li>') + '</ul>'
         });
         
         plPlaylist.parentNode.insertBefore(pl, plPlaylist.nextSibling);
@@ -685,7 +686,16 @@ $(document).ready(function() {
         // Remove player from the DOM if necessary
         // player.parentNode.removeChild(player);
       }
+      function deletePL(index) {
+        if(index!=undefined)
+        {
+            playList.splice(index,1);
 
+            if (playList.length === 0) {
+                clearAll();
+            }
+        }
+      }
       /**
        *  Helpers
        */
@@ -700,7 +710,10 @@ $(document).ready(function() {
         }
         return wheel;
       }
-
+      function reset() {
+          audio.play();
+          audio.pause();
+      }
       function extend(defaults, options) {
         for (var name in options) {
           if (defaults.hasOwnProperty(name)) {
@@ -779,10 +792,12 @@ $(document).ready(function() {
        */
       return {
         init: init,
+          reset: reset,
         update: updatePL,
         destroy: destroy,
         getTrack: getTrack,
-          updateAndPlay: updateAndPlay
+          updateAndPlay: updateAndPlay,
+          deletepl: deletePL
       };
 
     })();
