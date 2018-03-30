@@ -76,11 +76,6 @@ def index(request):
 def player(request):
     dateCheck()
     link = request.POST.get("link", "")
-    try:
-        if theds[link].isAlive():
-            theds[link].join()
-    except:
-        print()
     res=""
     conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
     c = conn.cursor()
@@ -122,11 +117,6 @@ def search(request):
                 title = content[x]['videoRenderer']['title']['simpleText'].replace("'", " ")
                 img = content[x]['videoRenderer']['thumbnail']['thumbnails'][0]['url']
                 link = content[x]['videoRenderer']['videoId']
-                if x <= 5:
-                    t = Thread(target=preload, args=(link,))
-                    t.daemon = True
-                    theds[link]=t
-                    t.start()
                 str = str + render_to_string("androidPlayer.html", {"img": img, "title": title, "link": link, "id": i})
                 i += 1
             except:
@@ -147,18 +137,19 @@ def create_connection(db_file):
         print(e)
 
     return None
-
-def preload(link):
+@csrf_exempt
+def preload(request):
     conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
     c = conn.cursor()
-    video = pafy.new('https://www.youtube.com/watch?v=' + link)
+    video = pafy.new('https://www.youtube.com/watch?v=' + request.POST.get('link'))
     audiostreams = video.audiostreams
     res = audiostreams[0].url
     conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
-    query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + link + "','" + res + "');"
+    query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + request.POST.get('link') + "','" + res + "');"
     with conn:
         c.execute(query)
     conn.commit()
+    return HttpResponse("")
 
 def play_song(request):
     return HttpResponse(render_to_string("index.html"))

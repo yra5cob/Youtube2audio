@@ -1,4 +1,3 @@
-
 //search ajax request
 function search() {
     $("#searchResult").html("<div class='nav_item' id='holder'><img src='/static/loading-icon.gif'/  height='94' width='168'></div>");
@@ -33,49 +32,53 @@ $(document).ready(function () {
 });
 
 
-function btnClick(lnk, id, title,img) {
+function btnClick(lnk, id, title, img) {
     //post("/index",{link:lnk});
     $('audio')[0].play();
     $('audio')[0].pause();
-    $.post("player",
+
+    lst = [{
+        'icon': img,
+        'title': title,
+        'file': '',
+        'link': lnk
+    }];
+    window.AP.updateAndPlay(lst);
+    $.post("preload",
         {
             link: lnk
 
         },
         function (data, status) {
-            var url = data;
-            lst=[{
-                'icon': img,
-                'title': title,
-                'file': url
-            }];
-            window.AP.updateAndPlay(lst);
+
 
         });
+
 }
 
-function btnAdd(lnk, id, title,img) {
+function btnAdd(lnk, id, title, img) {
     //post("/index",{link:lnk});
-    $.post("player",
+
+    lst = [{
+        'icon': img,
+        'title': title,
+        'file': '',
+        'link': lnk
+    }];
+    window.AP.update(lst);
+    $.post("preload",
         {
             link: lnk
 
         },
         function (data, status) {
-            var url = data;
-            lst=[{
-                'icon': img,
-                'title': title,
-                'file': url
-            }];
-            window.AP.update(lst);
+
 
         });
 }
 
 
-
-$(document).ready(function(e) {
+$(document).ready(function (e) {
 
     var startX, curX, startY, curY; // Variables
     var newXScroll, newYScroll, genXScroll; // More Variables!
@@ -100,38 +103,37 @@ $(document).ready(function(e) {
         /*			$('.slide-in').toggleClass('on');
          $('#main-container').toggleClass('on');
          outIn = 'out';*/
-              $('.bar').toggleClass('animate');
-      $('.hamburger-menu').toggleClass('slide');
-      $('.back_btn').toggleClass('slide');
-      $('.nav_menu').toggleClass('open');
-      $('.player_fade').toggleClass('player_fade_on');
+        $('.bar').toggleClass('animate');
+        $('.hamburger-menu').toggleClass('slide');
+        $('.back_btn').toggleClass('slide');
+        $('.nav_menu').toggleClass('open');
+        $('.player_fade').toggleClass('player_fade_on');
         console.log("right")
 
     });
-        Hammer(document.getElementById('fade')).on('swiperight', function (e) {
+    Hammer(document.getElementById('fade')).on('swiperight', function (e) {
         /*			$('.slide-in').toggleClass('on');
          $('#main-container').toggleClass('on');
          outIn = 'out';*/
-              $('.bar').toggleClass('animate');
-      $('.hamburger-menu').toggleClass('slide');
-      $('.back_btn').toggleClass('slide');
-      $('.nav_menu').toggleClass('open');
-      $('.player_fade').toggleClass('player_fade_on');
+        $('.bar').toggleClass('animate');
+        $('.hamburger-menu').toggleClass('slide');
+        $('.back_btn').toggleClass('slide');
+        $('.nav_menu').toggleClass('open');
+        $('.player_fade').toggleClass('player_fade_on');
         console.log("right")
 
     });
-
 
 
     Hammer(document.getElementById('cont')).on('swipeleft', function (e) {
         /*			$('.slide-in').toggleClass('on');
          $('#main-container').toggleClass('on');
          outIn = 'in';*/
-              $('.bar').toggleClass('animate');
-      $('.hamburger-menu').toggleClass('slide');
-      $('.back_btn').toggleClass('slide');
-      $('.nav_menu').toggleClass('open');
-      $('.player_fade').toggleClass('player_fade_on');
+        $('.bar').toggleClass('animate');
+        $('.hamburger-menu').toggleClass('slide');
+        $('.back_btn').toggleClass('slide');
+        $('.nav_menu').toggleClass('open');
+        $('.player_fade').toggleClass('player_fade_on');
         console.log("left")
     });
 
@@ -155,13 +157,13 @@ $(document).ready(function(e) {
     }
 });
 /*
-	$('.menu-icon')[0].addEventListener('touchend', function(e) {
-		$('.slide-in').toggleClass('on');
-		$('#main-container').toggleClass('on');
-	});
+ $('.menu-icon')[0].addEventListener('touchend', function(e) {
+ $('.slide-in').toggleClass('on');
+ $('#main-container').toggleClass('on');
+ });
 
-	$('.menu-icon').click(function() {
-		$('.slide-in').toggleClass('on');
-		$('#main-container').toggleClass('on');
-	});
-*/
+ $('.menu-icon').click(function() {
+ $('.slide-in').toggleClass('on');
+ $('#main-container').toggleClass('on');
+ });
+ */
