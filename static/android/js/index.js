@@ -56,7 +56,7 @@ $(document).ready(function() {
               '</div>' +
             '</div>' +
           '</div>' +
-          '<div class="song_block pl-list__title">{title}</div><a href="#" class="delete">Delete</a>' +
+          '<div class="song_block pl-list__title">{title}</div>' +
         '</li>',
         // settings
         settings = {
