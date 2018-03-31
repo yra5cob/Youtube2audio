@@ -233,6 +233,7 @@ html {
   width: 275px;
   height: 490px;
   background: rgba(0, 0, 0, .5);
+  height: 100vh;
 }
 
 .bar,

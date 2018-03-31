@@ -99,33 +99,39 @@ $(document).ready(function (e) {
 
     var outIn = 'in';
 
-    Hammer(document.getElementById('cont')).on('swiperight', function (e) {
-        /*			$('.slide-in').toggleClass('on');
-         $('#main-container').toggleClass('on');
-         outIn = 'out';*/
-        $('.bar').toggleClass('animate');
-        $('.hamburger-menu').toggleClass('slide');
-        $('.back_btn').toggleClass('slide');
-        $('.nav_menu').toggleClass('open');
-        $('.player_fade').toggleClass('player_fade_on');
-        console.log("right")
-
-    });
-    Hammer(document.getElementById('fade')).on('swiperight', function (e) {
-        /*			$('.slide-in').toggleClass('on');
-         $('#main-container').toggleClass('on');
-         outIn = 'out';*/
-        $('.bar').toggleClass('animate');
-        $('.hamburger-menu').toggleClass('slide');
-        $('.back_btn').toggleClass('slide');
-        $('.nav_menu').toggleClass('open');
-        $('.player_fade').toggleClass('player_fade_on');
-        console.log("right")
-
-    });
-
-
     Hammer(document.getElementById('cont')).on('swipeleft', function (e) {
+        /*			$('.slide-in').toggleClass('on');
+         $('#main-container').toggleClass('on');
+         outIn = 'out';*/
+        $('.bar').toggleClass('animate');
+        $('.hamburger-menu').toggleClass('slide');
+        $('.back_btn').toggleClass('slide');
+        $('.nav_menu').toggleClass('open');
+        $('.player_fade').toggleClass('player_fade_on');
+        console.log("right")
+
+    });
+    Hammer(document.getElementById('cont')).on('swipeup', function (e) {
+        /*			$('.slide-in').toggleClass('on');
+         $('#main-container').toggleClass('on');
+         outIn = 'out';*/
+            $('.player_playlist').toggleClass('playlist_on');
+            $('.glyphicon-menu-left').toggleClass('back_btn_on');
+            $('.waves').toggleClass('waves_up');
+            $('.album_wrap').toggleClass('album_up');
+            $('.song_playing').toggleClass('song_playing_up');
+            $('.timeline_wrap').toggleClass('timeline_wrap_up');
+            $('.player_btns').toggleClass('player_btns_up');
+            $('.line_played').toggleClass('line_played_up');
+            $('.full_line').toggleClass('full_line_up');
+            $('.time_of_song').toggleClass('time_of_song_up');
+            $('.progress-bar-pointer').toggleClass('progress-bar-pointer_up');
+            $('.line_preload').toggleClass('line_preload_up');
+
+    });
+
+
+    Hammer(document.getElementById('fade')).on('swiperight', function (e) {
         /*			$('.slide-in').toggleClass('on');
          $('#main-container').toggleClass('on');
          outIn = 'in';*/
@@ -135,6 +141,26 @@ $(document).ready(function (e) {
         $('.nav_menu').toggleClass('open');
         $('.player_fade').toggleClass('player_fade_on');
         console.log("left")
+    });
+
+        Hammer(document.getElementById('pl')).on('swipedown', function (e) {
+        /*			$('.slide-in').toggleClass('on');
+         $('#main-container').toggleClass('on');
+         outIn = 'in';*/
+        e.prevent_default;
+        console.log("down");
+                    $('.player_playlist').toggleClass('playlist_on');
+            $('.glyphicon-menu-left').toggleClass('back_btn_on');
+            $('.waves').toggleClass('waves_up');
+            $('.album_wrap').toggleClass('album_up');
+            $('.song_playing').toggleClass('song_playing_up');
+            $('.timeline_wrap').toggleClass('timeline_wrap_up');
+            $('.player_btns').toggleClass('player_btns_up');
+            $('.line_played').toggleClass('line_played_up');
+            $('.full_line').toggleClass('full_line_up');
+            $('.time_of_song').toggleClass('time_of_song_up');
+            $('.progress-bar-pointer').toggleClass('progress-bar-pointer_up');
+            $('.line_preload').toggleClass('line_preload_up');
     });
 
 

@@ -451,11 +451,16 @@ $(document).ready(function () {
             }
 
             function prev() {
+
                 play(index - 1);
             }
 
             function next() {
-                play(index + 1);
+                next=$('li.pl-list--current').next().attr('data-track');
+                if(next!=undefined)
+                {
+                    play(next);
+                }
             }
 
             function isEmptyList() {
@@ -606,7 +611,11 @@ $(document).ready(function () {
                         play(0);
                     }
                 } else {
-                    play(index + 1);
+                    next = $('li.pl-list--current').next().attr('data-track');
+                    if (next != undefined) {
+                        play(next);
+                    }
+
                 }
             }
 

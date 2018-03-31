@@ -226,6 +226,7 @@
     ol.addEventListener('slip:beforeswipe', function(e){
         if (e.target.nodeName == 'INPUT' || /demo-no-swipe/.test(e.target.className)) {
             e.preventDefault();
+            console.log("before swipe")
         }
     }, false);
 
