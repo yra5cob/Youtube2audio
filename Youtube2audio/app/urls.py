@@ -22,6 +22,6 @@ from Youtube2audio import settings
 from Youtube2audio.app import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),url(r'^index', views.index, name='index'),url(r'^$', views.index, name='index'),url(r'^player', views.player, name='player'),url(r'^search', views.search, name='search'),url(r'^play_song', views.play_song, name='play_song'),
+    path('admin/', admin.site.urls),url(r'^index', views.index, name='index'),url(r'^$', views.index, name='index'),url(r'^player', views.player, name='player'),url(r'^search', views.search, name='search'),url(r'^play_song', views.play_song, name='play_song'),url(r'^preload', views.preload, name='preload'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
