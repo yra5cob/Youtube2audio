@@ -132,7 +132,7 @@ def player(request):
     res=""
     conn = create_connection()
     c = conn.cursor()
-    query="select url from CACHE_URL where ID='"+link+"';"
+    query="select url from cache_url where ID='"+link+"';"
     c.execute(query)
     rows = c.fetchall()
     if rows.__len__()>0:
@@ -141,7 +141,7 @@ def player(request):
         video = pafy.new('https://www.youtube.com/watch?v=' + link)
         audiostreams = video.audiostreams
         res =audiostreams[0].url
-        query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + link + "','" + res + "') ON DUPLICATE KEY UPDATE ID=ID;;"
+        query = "INSERT INTO cache_url(ID,URL) VALUES ('" + link + "','" + res + "') ON DUPLICATE KEY UPDATE ID=ID;;"
         with conn:
             c.execute(query)
         conn.commit()
@@ -199,7 +199,7 @@ def preload(request):
     video = pafy.new('https://www.youtube.com/watch?v=' + request.POST.get('link'))
     audiostreams = video.audiostreams
     res = audiostreams[0].url
-    query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + request.POST.get('link') + "','" + res + "') ON DUPLICATE KEY UPDATE ID=ID;"
+    query = "INSERT INTO cache_url(ID,URL) VALUES ('" + request.POST.get('link') + "','" + res + "') ON DUPLICATE KEY UPDATE ID=ID;"
     with conn:
         c.execute(query)
     conn.commit()
