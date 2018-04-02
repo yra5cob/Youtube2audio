@@ -888,18 +888,7 @@ $(document).ready(function () {
 
     (function () {
         $('.back_btn').on('click', function () {
-            $('.player_playlist').toggleClass('playlist_on');
-            $('.glyphicon-menu-left').toggleClass('back_btn_on');
-            $('.waves').toggleClass('waves_up');
-            $('.album_wrap').toggleClass('album_up');
-            $('.song_playing').toggleClass('song_playing_up');
-            $('.timeline_wrap').toggleClass('timeline_wrap_up');
-            $('.player_btns').toggleClass('player_btns_up');
-            $('.line_played').toggleClass('line_played_up');
-            $('.full_line').toggleClass('full_line_up');
-            $('.time_of_song').toggleClass('time_of_song_up');
-            $('.progress-bar-pointer').toggleClass('progress-bar-pointer_up');
-            $('.line_preload').toggleClass('line_preload_up');
+document.getElementById("mySidenav").style.width = "50%";
         })
     })();
 

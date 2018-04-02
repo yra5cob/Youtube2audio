@@ -1,6 +1,6 @@
 import os
 from wsgiref.util import FileWrapper
-
+import MySQLdb
 from django.http import HttpResponse
 import urllib
 from threading import Thread
@@ -15,7 +15,6 @@ from sqlite3 import Error
 import requests
 import json
 import datetime
-
 
 theds=dict()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -72,12 +71,66 @@ def index(request):
                 except:
                     print
     return HttpResponse(render_to_string("base.html", {"bdy":str}))
+
+@csrf_exempt
+def save(request):
+    playlist=request.POST.get("playlist", "")
+    usr=request.session.get('user')
+    link=request.POST.get("link", "")
+    title=request.POST.get("title", "")
+    img=request.POST.get("img", "")
+    query="INSERT INTO `songs`(`plname`, `link`, `user`, `title`, `img`) VALUES ('"+playlist+"','"+link+"','"+usr+"','"+title+"','"+img+"') ON DUPLICATE KEY UPDATE USER=USER;;"
+    print(query)
+    conn=create_connection()
+    c=conn.cursor()
+    c.execute(query)
+    conn.commit()
+    return HttpResponse("")
+
+@csrf_exempt
+def remove(request):
+    playlist=request.POST.get("playlist", "")
+    usr=request.session.get('user')
+    link=request.POST.get("link", "")
+    query="DELETE FROM `songs` WHERE plname like '"+playlist+"' and user like '"+usr+"' and link like '"+link+"';"
+    conn=create_connection()
+    c=conn.cursor()
+    c.execute(query)
+    conn.commit()
+    return HttpResponse("")
+
+@csrf_exempt
+def load(request):
+    playlist=request.POST.get("playlist", "")
+    usr=request.session.get('user')
+    query="SELECT `plname`, `link`, `user`, `title`, `img` FROM `songs` WHERE plname like '"+playlist+"' and user like '"+usr+"';"
+    conn = create_connection()
+    c = conn.cursor()
+    c.execute(query)
+    rows = c.fetchall()
+    data={}
+    content={}
+    i=1
+    if rows.__len__() > 0:
+        lst={}
+        for x in rows:
+            lst['title']=x[3]
+            lst['link']=x[1]
+            lst['img']=x[4]
+            content[i]=lst
+            i+=1
+    data['data']=content
+    data['length']=i-1
+    return HttpResponse(json.dumps(data, ensure_ascii=False))
+
+
+
+
 @csrf_exempt
 def player(request):
-    dateCheck()
     link = request.POST.get("link", "")
     res=""
-    conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
+    conn = create_connection()
     c = conn.cursor()
     query="select url from CACHE_URL where ID='"+link+"';"
     c.execute(query)
@@ -88,8 +141,7 @@ def player(request):
         video = pafy.new('https://www.youtube.com/watch?v=' + link)
         audiostreams = video.audiostreams
         res =audiostreams[0].url
-        conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
-        query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + link + "','" + res + "');"
+        query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + link + "','" + res + "') ON DUPLICATE KEY UPDATE ID=ID;;"
         with conn:
             c.execute(query)
         conn.commit()
@@ -124,28 +176,30 @@ def search(request):
     return HttpResponse(str)
 
 
-def create_connection(db_file):
+def create_connection():
     """ create a database connection to the SQLite database
         specified by the db_file
     :param db_file: database file
     :return: Connection object or None
     """
     try:
-        conn = sqlite3.connect(db_file,isolation_level=None)
-        return conn
+        db = MySQLdb.connect(host="localhost",  # your host
+                         user="root",  # username
+                         passwd="root",  # password
+                         db="you2song")  # name of the database
+        return db
     except Error as e:
         print(e)
 
     return None
 @csrf_exempt
 def preload(request):
-    conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
+    conn = create_connection()
     c = conn.cursor()
     video = pafy.new('https://www.youtube.com/watch?v=' + request.POST.get('link'))
     audiostreams = video.audiostreams
     res = audiostreams[0].url
-    conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
-    query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + request.POST.get('link') + "','" + res + "');"
+    query = "INSERT INTO CACHE_URL(ID,URL) VALUES ('" + request.POST.get('link') + "','" + res + "') ON DUPLICATE KEY UPDATE ID=ID;"
     with conn:
         c.execute(query)
     conn.commit()
@@ -162,20 +216,6 @@ def play_song(request):
     else:
         return HttpResponse(render_to_string("index.html"))
 
-def dateCheck():
-    tdy=datetime.date.today()
-    query="Select value from PROPERTIES where key like 'date'"
-    conn = create_connection(os.path.join(BASE_DIR, 'db.sqlite3'))
-    c = conn.cursor()
-    c.execute(query)
-    rows = c.fetchall()
-    dbdate=rows[0]
-    if str(tdy)!=dbdate[0]:
-        query = "insert into PROPERTIES(KEY,VALUE) VALUES('date','"+str(tdy)+"')"
-        c.execute(query)
-        query = "Delete from CACHE_URL"
-        c.execute(query)
-    conn.commit()
 
 def download(request):
     return HttpResponse(render_to_string("index.html"))
