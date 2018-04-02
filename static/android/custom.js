@@ -116,6 +116,18 @@ function btnAdd(lnk, id, title, img) {
 
 
         });
+    $.post("save",
+        {
+            link: lnk,
+            title: title,
+            img: img,
+            playlist: 'current'
+
+        },
+        function (data, status) {
+
+
+        });
 }
 
 
