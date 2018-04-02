@@ -305,13 +305,14 @@ html {
 /* ------------------------------------- */
 
 .player_playlist {
+      height: 100%;
   width: 100%;
   position: absolute;
   z-index: 60;
   top: 100vh;
   overflow: scroll;
   overflow-x: hidden;
-  height: 305px;
+
   -webkit-transition: top .2s ease-in-out;
   transition: top .2s ease-in-out;
   background-color: rgba(255, 255, 255, 1);

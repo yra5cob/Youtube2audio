@@ -56,7 +56,7 @@ $(document).ready(function () {
                     '</div>' +
                     '</div>' +
                     '</div>' +
-                    '<div class="song_block pl-list__title">{title}</div>' +
+                    '<div class="song_block pl-list__title"><span class="glyphicon-class"></span>{title}</div>' +
                     '</li>',
                 // settings
                 settings = {
@@ -414,7 +414,7 @@ $(document).ready(function () {
                     return clearAll();
                 }
 
-                index = (currentIndex + playList.length) % playList.length;
+                index = currentIndex;
                 $.ajaxSetup({async: false});
                 $.post("player",
                     {
@@ -452,7 +452,11 @@ $(document).ready(function () {
 
             function prev() {
 
-                play(index - 1);
+                prev=$('li.pl-list--current').prev().attr('data-track');
+                if(next!=undefined)
+                {
+                    play(prev);
+                }
             }
 
             function next() {

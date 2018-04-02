@@ -151,8 +151,16 @@ def preload(request):
     conn.commit()
     return HttpResponse("")
 
+@csrf_exempt
 def play_song(request):
-    return HttpResponse(render_to_string("index.html"))
+    if request.session.get('user')==None:
+        if 'email' in request.POST:
+            request.session['user'] = request.POST.get('email')
+            return HttpResponse(render_to_string("index.html"))
+        else:
+            return HttpResponse(render_to_string("login.html"))
+    else:
+        return HttpResponse(render_to_string("index.html"))
 
 def dateCheck():
     tdy=datetime.date.today()
@@ -168,3 +176,6 @@ def dateCheck():
         query = "Delete from CACHE_URL"
         c.execute(query)
     conn.commit()
+
+def download(request):
+    return HttpResponse(render_to_string("index.html"))
