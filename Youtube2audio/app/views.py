@@ -112,8 +112,8 @@ def load(request):
     content={}
     i=1
     if rows.__len__() > 0:
-        lst={}
         for x in rows:
+            lst = {}
             lst['title']=x[3]
             lst['link']=x[1]
             lst['img']=x[4]
