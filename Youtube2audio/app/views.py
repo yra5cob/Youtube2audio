@@ -151,6 +151,7 @@ def player(request):
     if rows.__len__()>0:
         res=rows[0]
     else:
+        print('fetching..')
         video = pafy.new('https://www.youtube.com/watch?v=' + link)
         audiostreams = video.audiostreams
         res =audiostreams[0].url
