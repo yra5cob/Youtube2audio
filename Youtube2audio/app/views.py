@@ -145,7 +145,7 @@ def player(request):
     res=""
     conn = create_connection()
     c = conn.cursor()
-    query="select url from cache_url where ID='"+link+"' and date >= DATE_SUB(NOW(),INTERVAL 1 HOUR));"
+    query="select url from cache_url where ID='"+link+"' and date >= DATE_SUB(NOW(),INTERVAL 1 HOUR);"
     c.execute(query)
     rows = c.fetchall()
     if rows.__len__()>0:
