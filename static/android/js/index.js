@@ -910,7 +910,7 @@ $(document).ready(function () {
 
     (function () {
         $('.back_btn').on('click', function () {
-document.getElementById("mySidenav").style.width = "50%";
+document.getElementById("mySidenav").style.width = "70%";
         })
     })();
 

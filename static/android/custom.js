@@ -127,9 +127,11 @@ $(document).ready(function (e) {
     });
       Hammer(document.getElementById('cont')).on('swiperight', function (e) {
         document.getElementById("mySidenav").style.width = "70%";
+        $('.player_fade').toggleClass('player_fade_on');
       });
-            Hammer(document.getElementById('mySidenav')).on('swipeleft', function (e) {
+            Hammer(document.getElementById('fade')).on('swipeleft', function (e) {
         document.getElementById("mySidenav").style.width = "0%";
+        $('.player_fade').toggleClass('player_fade_on');
       });
 
     Hammer(document.getElementById('fade')).on('swiperight', function (e) {
