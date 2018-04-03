@@ -8,9 +8,6 @@
     {% load static %}
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
@@ -24,14 +21,55 @@
 </head>
 
 <body style="height:100vh;">
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create playlist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <label>Name  </label><input id="playlistname"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="createPlaylist()">Create</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="playlistmodal" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add to Playlist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <div class="container-fluid" >
+            <ul class="list-group" id="plcontainer">
+                <li class="list-group-item" onclick="showCreatePl()">Create Playlist</li>
+            </ul></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
                     <div id="mySidenav" class="sidenav">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="panel panel-default">
   <div class="panel-body">
     Saved Playlist
   </div>
-</div><div class="row ">
-  <div class="col"><a href="#"><span class="glyphicon glyphicon glyphicon-music" aria-hidden="true"></span> Old songs</a></div> <div class="col"><span class="glyphicon glyphicon-trash" aria-hidden="true" style="margin: 10px"></span></div> </div>
+</div>
 </div>
 <div class="player" id="ap" style="padding: 0px;">
 
@@ -200,8 +238,11 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script src="{% static  'android/js/index.js' %}"></script>
 <script src="{% static  'android/custom.js' %}"></script>
+
 <script src="{% static  'hammer.js' %}"></script>
 <script src="{% static  'slip.js' %}"></script>
+     <script src="{% static  'android/js/popper.min.js' %}"></script>
+    <script src="{% static  'android/js/bootstrap.js' %}"></script>
 <script>
     $(document).ready(function(e) {
     var ol = document.getElementById('slippylist');
@@ -225,7 +266,7 @@
     ol.addEventListener('slip:afterswipe', function(e){
         e.target.parentNode.appendChild(e.target);
         index=parseInt(e.target.closest('.pl-list').getAttribute('data-track'), 10);
-        $.post("remove",
+        $.post("http://"+window.location.hostname+":8000/remove",
         {
             link: window.AP.getTrack(index)['link'],
             playlist: 'current'

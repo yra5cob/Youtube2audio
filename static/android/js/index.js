@@ -2,7 +2,7 @@ $(window).on('load', function () { // makes sure the whole site is loaded
     $('#status').fadeOut(); // will first fade out the loading animation
     $('#preloader').delay(500).fadeOut('slow'); // will fade out the white DIV that covers the website.
     checkTouchScreen();
-})
+});
 
 $(document).ready(function () {
     (function (window, undefined) {
@@ -229,18 +229,22 @@ $(document).ready(function () {
                 // If exist empty message
                 if (plUl.querySelector('.pl-list--empty')) {
                     plUl.removeChild(pl.querySelector('.pl-list--empty'));
-                    $.ajaxSetup({async: false});
-                    $.post("player",
-                        {
-                            link: playList[index].link
+              if(playList[index].file==='') {
+                     $.post("http://"+window.location.hostname+":8000/",
+                         {
+                             link: playList[index].link
 
-                        },
-                        function (data, status) {
+                         },
+                         function (data, status) {
 
-                            playList[index].file = data
-                        });
-                    $.ajaxSetup({async: true});
-                    audio.src = playList[index].file;
+                             playList[index].file = data;
+                             audio.src = playList[index].file;
+                             audio.play();
+                         });
+                 }
+                 else {
+                     audio.src = playList[index].file;
+                 }
                     trackTitle.innerHTML = playList[index].title;
                 }
                 // Add song into playlist
@@ -277,18 +281,21 @@ $(document).ready(function () {
                 // If exist empty message
                 if (plUl.querySelector('.pl-list--empty')) {
                     plUl.removeChild(pl.querySelector('.pl-list--empty'));
-                    $.ajaxSetup({async: false});
-                    $.post("player",
-                        {
-                            link: playList[index].link
+                 if(playList[index].file==='') {
+                     $.post("http://"+window.location.hostname+":8000/player",
+                         {
+                             link: playList[index].link
 
-                        },
-                        function (data, status) {
+                         },
+                         function (data, status) {
 
-                            playList[index].file = data
-                        });
-                    $.ajaxSetup({async: true});
-                    audio.src = playList[index].file;
+                             playList[index].file = data
+                             audio.src = playList[index].file;
+                         });
+                 }
+                 else {
+                     audio.src = playList[index].file;
+                 }
                     trackTitle.innerHTML = playList[index].title;
                 }
                 // Add song into playlist
@@ -368,18 +375,22 @@ $(document).ready(function () {
                                     if (isDel > playList.length - 1) {
                                         index -= 1;
                                     }
-                                    $.ajaxSetup({async: false});
-                                    $.post("player",
-                                        {
-                                            link: playList[index].link
+                                 if(playList[index].file==='') {
+                     $.post("http://"+window.location.hostname+":8000/player",
+                         {
+                             link: playList[index].link
 
-                                        },
-                                        function (data, status) {
+                         },
+                         function (data, status) {
 
-                                            playList[index].file = data
-                                        });
-                                    $.ajaxSetup({async: true});
-                                    audio.src = playList[index].file;
+                             playList[index].file = data;
+                             audio.src = playList[index].file;
+                             audio.play();
+                         });
+                 }
+                 else {
+                     audio.src = playList[index].file;
+                 };
                                     trackTitle.innerHTML = playList[index].title;
                                     progressBar.style.width = 0;
                                 }
@@ -415,25 +426,33 @@ $(document).ready(function () {
                 }
 
                 index = currentIndex;
-                $.ajaxSetup({async: false});
-                $.post("player",
-                    {
-                        link: playList[index].link
+                if (playList[index].file==='')
+                {
+                    $.post("http://"+window.location.hostname+":8000/player",
+                        {
+                            link: playList[index].link
 
-                    },
-                    function (data, status) {
+                        },
+                        function (data, status) {
 
-                        playList[index].file = data
-                    });
-                $.ajaxSetup({async: true});
-                audio.src = playList[index].file;
+                            playList[index].file = data;
+                            audio.src = playList[index].file;
+                            audio.play();
+                        });
+                }
+                else
+                {
+                    audio.src = playList[index].file;
+                    audio.play();
+                }
+
                 trackTitle.innerHTML = playList[index].title;
 
                 // Change document title
                 changeDocumentTitle(playList[index].title);
 
                 // Audio play
-                audio.play();
+
 
                 // Show notification
                 notify(playList[index].title, {
@@ -472,6 +491,8 @@ $(document).ready(function () {
             }
 
             function clearAll() {
+                playList=[];
+                index=0;
                 audio.pause();
                 audio.src = '';
                 trackTitle.innerHTML = 'queue is empty';
@@ -861,7 +882,8 @@ $(document).ready(function () {
                 destroy: destroy,
                 getTrack: getTrack,
                 updateAndPlay: updateAndPlay,
-                deletepl: deletePL
+                deletepl: deletePL,
+                clearAll: clearAll
             };
 
         })();

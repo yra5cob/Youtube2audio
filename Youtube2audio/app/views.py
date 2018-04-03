@@ -1,6 +1,7 @@
 import os
 from wsgiref.util import FileWrapper
 import MySQLdb
+from apscheduler.schedulers.background import BackgroundScheduler
 from django.http import HttpResponse
 import urllib
 from threading import Thread
@@ -15,6 +16,19 @@ from sqlite3 import Error
 import requests
 import json
 import datetime
+from apscheduler.schedulers.blocking import BlockingScheduler
+
+def deleteJob():
+    query="DELETE FROM cache_url WHERE date < (NOW() - INTERVAL 3 HOUR);"
+    conn=create_connection()
+    c=conn.cursor()
+    c.execute(query)
+    conn.commit()
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(deleteJob, 'interval', hours=1)
+scheduler.start()
+
 
 theds=dict()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,7 +94,6 @@ def save(request):
     title=request.POST.get("title", "")
     img=request.POST.get("img", "")
     query="INSERT INTO `songs`(`plname`, `link`, `user`, `title`, `img`) VALUES ('"+playlist+"','"+link+"','"+usr+"','"+title+"','"+img+"') ON DUPLICATE KEY UPDATE USER=USER;;"
-    print(query)
     conn=create_connection()
     c=conn.cursor()
     c.execute(query)
@@ -100,7 +113,7 @@ def remove(request):
     return HttpResponse("")
 
 @csrf_exempt
-def load(request):
+def current(request):
     playlist=request.POST.get("playlist", "")
     usr=request.session.get('user')
     query="SELECT `plname`, `link`, `user`, `title`, `img` FROM `songs` WHERE plname like '"+playlist+"' and user like '"+usr+"';"
@@ -132,7 +145,7 @@ def player(request):
     res=""
     conn = create_connection()
     c = conn.cursor()
-    query="select url from cache_url where ID='"+link+"';"
+    query="select url from cache_url where ID='"+link+"' and date < (NOW() - INTERVAL 3 HOUR);"
     c.execute(query)
     rows = c.fetchall()
     if rows.__len__()>0:
@@ -204,6 +217,40 @@ def preload(request):
         c.execute(query)
     conn.commit()
     return HttpResponse("")
+
+@csrf_exempt
+def createplaylist(request):
+    conn = create_connection()
+    c = conn.cursor()
+    if 'action' in request.POST:
+        query="DELETE FROM `playlist` where email like '{0}' and pname like '{1}'".format(request.session.get('user'),request.POST.get('name'))
+        c.execute(query)
+        conn.commit()
+        q="DELETE FROM `songs` where user like '{0}' and plname like '{1}'".format(request.session.get('user'),request.POST.get('name'))
+        c.execute(q)
+        conn.commit()
+    else:
+        query="INSERT INTO `playlist`(`email`, `pname`) VALUES ('{0}','{1}') ON DUPLICATE KEY UPDATE email=email; ".format(request.session.get('user'),request.POST.get('name'))
+        c.execute(query)
+        conn.commit()
+    return HttpResponse("")
+
+@csrf_exempt
+def playlist(request):
+    conn = create_connection()
+    c = conn.cursor()
+    query="SELECT `email`, `pname` FROM `playlist` WHERE email like '{0}'".format(request.session.get('user'))
+    c.execute(query)
+    rows = c.fetchall()
+    i=1
+    d={}
+    c={}
+    for x in rows:
+        c[i]=x[1]
+        i+=1
+    d['length']=i-1
+    d['data']=c
+    return HttpResponse(json.dumps(d, ensure_ascii=False))
 
 @csrf_exempt
 def play_song(request):

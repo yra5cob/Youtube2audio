@@ -1,18 +1,25 @@
-                <div class="nav_item">
-                    <div class="row" >
-                        <div class="col-md-4" style="width: 70%"><img
-                                src="{{ img }}"
-                                height="94" width="168"></div>
-                        <div class="col-md-8">
-                            <div><span>{{ title }}</span></div>
-                            <div>
-                            <button id="play" type="button" class="btn btn-success"
-                                    onclick="btnClick('{{ link }}','{{ id }}','{{ title }}','{{ img }}')">Play
-                            </button>
-                            <button id="queue" type="button" class="btn btn-success"
-                                    onclick="btnAdd('{{ link }}','{{ id }}','{{ title }}','{{ img }}')">Queue
-                            </button>
-                            </div>
-                        </div>
-                    </div>
+<div class="nav_item">
+    <div class="row">
+        <div class="col-md-4" style="width: 70%"><img
+                src="{{ img }}"
+                height="94" width="168"></div>
+        <div class="col-md-8">
+            <div class="row"><span>{{ title }}</span></div>
+            <div class="row">
+                <div class="col">
+                <button id="play" type="button" class="btn btn-success"
+                        onclick="btnClick('{{ link }}','{{ id }}','{{ title }}','{{ img }}')">Play
+                </button></div>
+                <div class="col">
+                <button id="queue" type="button" class="btn btn-success"
+                        onclick="btnAdd('{{ link }}','{{ id }}','{{ title }}','{{ img }}')">Queue
+                </button></div>
+                <div class="col">
+                    <button class="btn btn-success" type="button" onclick="openPlaylist('{{ link }}','{{ title }}','{{ img }}')">
+                        Add to playlist
+                    </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
