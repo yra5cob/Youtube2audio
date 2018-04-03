@@ -125,7 +125,12 @@ $(document).ready(function (e) {
         $('.line_preload').toggleClass('line_preload_up');
 
     });
-
+      Hammer(document.getElementById('cont')).on('swiperight', function (e) {
+        document.getElementById("mySidenav").style.width = "70%";
+      });
+            Hammer(document.getElementById('mySidenav')).on('swipeleft', function (e) {
+        document.getElementById("mySidenav").style.width = "0%";
+      });
 
     Hammer(document.getElementById('fade')).on('swiperight', function (e) {
         /*			$('.slide-in').toggleClass('on');
